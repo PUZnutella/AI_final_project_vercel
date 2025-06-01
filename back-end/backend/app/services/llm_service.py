@@ -18,7 +18,7 @@ if not api_key:
 # 建立 Gemini 客戶端
 client = genai.Client(api_key=api_key)
 
-def call_llm_for_background(
+async def call_llm_for_background(
     prompt: str,
     model: str = "gemini-2.0-flash",
     temperature: float = 0.7,
@@ -46,17 +46,18 @@ def call_llm_for_background(
         "不要使用任何換行符號。"
     )
 
-    resp = client.models.generate_content(
-        model=model,
-        contents=[system_prompt, user_instruction],
-        config=types.GenerateContentConfig(
-            temperature=temperature,
-            max_output_tokens=max_tokens,
-            candidate_count=1
+    def _sync_call():
+        return client.models.generate_content(
+            model=model,
+            contents=[system_prompt, user_instruction],
+            config=types.GenerateContentConfig(
+                temperature=temperature,
+                max_output_tokens=max_tokens,
+                candidate_count=1
+            )
         )
-    )
 
-    # resp.text 裡就是單純的回應文字
+    resp = await asyncio.to_thread(_sync_call)
     return resp.text.strip()
 
 async def call_llm_for_characters(
@@ -319,7 +320,7 @@ async def call_llm_for_scenes_and_ending(
         5. 漸進揭露：
         - 幕與幕之間要有連貫性：第一幕揭開事件冰山一角，第二幕拼湊部分真相，第三幕提供最後兇手線索。
         6. 每幕腳本長度：
-        -“dialogue” 中 **禁止** 出现“我是李明”之類的自我介紹句子；請直接以角色的語氣進入對話。
+        -"dialogue" 中 **禁止** 出现"我是李明"之類的自我介紹句子；請直接以角色的語氣進入對話。
         - 每個角色在每幕的專屬劇本 100–200 字，保證足夠細節。
         7. 嵌入謎題：
         - 部分線索請以「謎題」形式出現（例如：『密碼是屋頂牌匾上的三個字母』），讓玩家必須解題才能進入下一步。

@@ -6,7 +6,7 @@ from ..models import Game
 from ..services.memory_services import MemoryService
 from ..services.llm_service import call_llm_for_background
 
-router = APIRouter(prefix="/api/world", tags=["world"])
+router = APIRouter(tags=["world"])
 
 class BackgroundRequest(BaseModel):
     prompt: str

@@ -8,3 +8,7 @@ pytest
 httpx
 jsonschema
 pytest-asyncio
+pydantic
+python-multipart
+supabase
+requests

@@ -12,9 +12,18 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '..', '.env'))
 
 app = FastAPI()
+
+# 配置CORS
+origins = [
+    "http://localhost:3000",
+    "https://*.vercel.app",
+    "https://*.railway.app",
+    # 如果您有自定义域名，也可以添加
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # 或 ["*"]，若你測試階段可開放所有
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

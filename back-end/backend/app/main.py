@@ -4,7 +4,6 @@ from .routers import world, world_gen, chat,players,npcs
 import os
 from dotenv import load_dotenv
 from sqlalchemy import text
-
 from fastapi.middleware.cors import CORSMiddleware
 
 # 讀取根目錄下的 .env

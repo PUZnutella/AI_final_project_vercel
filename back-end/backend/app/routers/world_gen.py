@@ -9,7 +9,7 @@ from ..services.llm_service import (
     call_llm_for_locations,
 )
 
-router = APIRouter(prefix="/world/games", tags=["world-gen"])
+router = APIRouter(tags=["world-gen"])
 
 class WorldGenRequest(BaseModel):
     background:     str = Field(..., description="故事背景")
